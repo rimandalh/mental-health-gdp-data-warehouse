@@ -59,9 +59,9 @@ erDiagram
         text disorder_name
     }
     Mental_Health_Fact {
-        int countryID PK_FK
-        int timeID PK_FK
-        int disorderID PK_FK
+        int countryID PK, FK
+        int timeID PK, FK
+        int disorderID PK, FK
         real mentalHealth_rate
         real gdp
         real healthExp
