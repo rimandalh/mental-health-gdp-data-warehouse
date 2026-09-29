@@ -98,7 +98,7 @@ Full scripts: [`sql/02_research_questions.sql`](sql/02_research_questions.sql)
 | RQ | Technique | Headline Finding |
 |---|---|---|
 | 1 | Aggregation by region and 3-year period, health spending share calculated as `healthExp / gdp × 100` | Health spending share rose in most regions (North America: 10.88% → 13.58%), while average disorder prevalence stayed largely flat everywhere |
-| 2 | Pearson correlation coefficient computed per region per period using raw SQL aggregates (no built-in stats function) | The GDP–prevalence relationship varies sharply by region — strongly positive in Europe & Central Asia (~0.63), strongly negative in South Asia (~-0.7), near zero in Sub-Saharan Africa |
+| 2 | Pearson correlation coefficient computed per region per period using raw SQL aggregates (no built-in stats function) | The GDP–prevalence relationship varies sharply by region — strongly positive in Europe & Central Asia (approximately 0.63), strongly negative in South Asia (approximately -0.7), near zero in Sub-Saharan Africa |
 | 3 | `NTILE(4)` spending-quartile peer grouping + window-function z-scores per disorder per period | Ten country-disorder pairs showed persistent deviation (\|z\| ≥ 2 in all 6 periods) from their spending peers — e.g., Afghanistan's drug use disorder prevalence averaged 5.75 standard deviations above peers |
 
 ## Key Insights
