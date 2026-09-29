@@ -28,7 +28,7 @@ The full ELT pipeline, schema design, and all analytical SQL are implemented **e
 | Country metadata (region, income group) | World Bank Open Data (same workbook, Metadata sheet) | XLSX |
 | Current health expenditure per capita | [WHO Global Health Observatory](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/current-health-expenditure-(che)-per-capita-in-us-dollar) | CSV |
 
-All four sources were extracted as flat files (no API access required) and imported into SQLite as unmodified staging tables — cleaning and integration happen entirely in the Transform stage, consistent with an **ELT** (not ETL) architecture.
+All four sources were extracted as flat files (no API access required) and imported into SQLite as unmodified staging tables — cleaning and integration happen entirely in the Transform stage, consistent with an **ELT** (not ETL) architecture. The raw, unmodified files as imported are included in [`data/raw/`](data/raw/) for full reproducibility.
 
 ## Star Schema
 
@@ -59,14 +59,16 @@ erDiagram
         text disorder_name
     }
     Mental_Health_Fact {
-        int countryID PK_FK
-        int timeID PK_FK
-        int disorderID PK_FK
+        int countryID PK, FK
+        int timeID PK, FK
+        int disorderID PK, FK
         real mentalHealth_rate
         real gdp
         real healthExp
     }
 ```
+
+`countryID`, `timeID`, and `disorderID` together form the fact table's composite primary key.
 
 **Attribute hierarchies:**
 - **Time:** year → 3-year period (2000-02 through 2015-17)
@@ -126,6 +128,12 @@ Full scripts: [`sql/02_research_questions.sql`](sql/02_research_questions.sql)
 │   └── 02_research_questions.sql        # Analytical SQL for RQ1–RQ3
 ├── database/
 │   └── mental_health_data_warehouse.db  # Final populated SQLite database
+├── data/
+│   └── raw/                             # Raw, unmodified source files as imported into SQLite
+│       ├── raw_mental_health.csv
+│       ├── raw_gdp.csv
+│       ├── raw_metadata_gdp.csv
+│       └── raw_health_expenditure.csv
 ├── docs/
 │   └── Final_Report.pdf                 # Full written report (motivation, results, figures, references)
 └── README.md
@@ -134,7 +142,7 @@ Full scripts: [`sql/02_research_questions.sql`](sql/02_research_questions.sql)
 ## How to Reproduce
 
 1. Clone this repo and open `database/mental_health_data_warehouse.db` directly in [DB Browser for SQLite](https://sqlitebrowser.org/) to explore the finished warehouse, **or**
-2. Run `sql/01_star_schema_and_elt.sql` against your own staging tables (built from the raw source files linked above) to rebuild the warehouse from scratch, then run `sql/02_research_questions.sql` against the result to reproduce the analysis
+2. Import the four files in `data/raw/` into a new SQLite database as staging tables, then run `sql/01_star_schema_and_elt.sql` to rebuild the warehouse from scratch, followed by `sql/02_research_questions.sql` to reproduce the analysis
 
 ## References
 
